@@ -1,0 +1,34 @@
+---
+kind: pipeline
+name: build
+clone:
+  depth: 1
+volumes:
+- name: gopath
+  temp: {}
+steps:
+- name: durl
+  image: quay.io/suzuki_shunsuke/durl:1.0.0
+  commands:
+    - sh scripts/durl.sh
+- name: golangci-lint
+  image: golangci/golangci-lint:v1.17.1
+  commands:
+  - golangci-lint run
+  environment:
+    GOPATH: /go
+  volumes: &volumes
+  - name: gopath
+    path: /go
+- name: codecov
+  image: golang:1.12.9
+  commands:
+  # bash and cgo seem to be required
+  - go test -race -coverprofile=coverage.out -covermode=atomic ./timeout
+  - curl -s https://codecov.io/bash > /tmp/codecov.sh
+  - test "$LOCAL" = "true" -o "$DRONE_BUILD_EVENT" = "pull_request" || bash /tmp/codecov.sh
+  environment:
+    GOPATH: /go
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+  volumes: *volumes

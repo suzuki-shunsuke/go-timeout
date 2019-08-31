@@ -9,9 +9,10 @@ import (
 
 type (
 	Runner struct {
-		killAfter   time.Duration
-		firstSignal syscall.Signal
-		sig         chan syscall.Signal
+		killAfter       time.Duration
+		firstSignal     syscall.Signal
+		sig             chan syscall.Signal
+		sigKillCallback func(int)
 	}
 )
 
@@ -29,6 +30,10 @@ func (runner *Runner) SendSignal(sig syscall.Signal) {
 
 func (runner *Runner) SetSignal(sig syscall.Signal) {
 	runner.firstSignal = sig
+}
+
+func (runner *Runner) SetSigKillCaballback(cb func(int)) {
+	runner.sigKillCallback = cb
 }
 
 func (runner *Runner) Run(ctx context.Context, cmd *exec.Cmd) error {
@@ -53,12 +58,23 @@ func (runner *Runner) Run(ctx context.Context, cmd *exec.Cmd) error {
 	for {
 		select {
 		case <-killAfterChan:
+			if runner.sigKillCallback != nil {
+				runner.sigKillCallback(targetID)
+			}
 			if err := syscall.Kill(targetID, syscall.SIGKILL); err != nil {
-				return &KillError{err: err, id: targetID}
+				return &KillError{
+					err: err,
+					id:  targetID,
+					sig: syscall.SIGKILL,
+				}
 			}
 		case sig := <-runner.sig:
 			if err := syscall.Kill(targetID, sig); err != nil {
-				return &KillError{err: err, id: targetID}
+				return &KillError{
+					err: err,
+					id:  targetID,
+					sig: sig,
+				}
 			}
 			if runner.killAfter > 0 {
 				time.AfterFunc(runner.killAfter, func() {
@@ -67,7 +83,11 @@ func (runner *Runner) Run(ctx context.Context, cmd *exec.Cmd) error {
 			}
 		case <-ctx.Done():
 			if err := syscall.Kill(targetID, runner.firstSignal); err != nil {
-				return &KillError{err: err, id: targetID}
+				return &KillError{
+					err: err,
+					id:  targetID,
+					sig: runner.firstSignal,
+				}
 			}
 			if runner.killAfter > 0 {
 				time.AfterFunc(runner.killAfter, func() {

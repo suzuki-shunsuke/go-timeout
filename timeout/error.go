@@ -38,3 +38,7 @@ func (ke *KillError) Error() string {
 func (ke *KillError) Cause() error {
 	return ke.err
 }
+
+func (ke *KillError) PID() int {
+	return ke.id
+}

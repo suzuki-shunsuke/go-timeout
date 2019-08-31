@@ -40,13 +40,7 @@ func (runner *Runner) Run(ctx context.Context, cmd *exec.Cmd) error {
 	if err := cmd.Start(); err != nil {
 		return &StartError{err: err}
 	}
-	targetID := 0
-	pgid, err := syscall.Getpgid(cmd.Process.Pid)
-	if err != nil {
-		targetID = cmd.Process.Pid
-	} else {
-		targetID = -pgid
-	}
+	targetID := getTargetID(cmd.Process.Pid)
 
 	exitChan := make(chan error, 1)
 	killAfterChan := make(chan struct{}, 1)
@@ -61,7 +55,7 @@ func (runner *Runner) Run(ctx context.Context, cmd *exec.Cmd) error {
 			if runner.sigKillCallback != nil {
 				runner.sigKillCallback(targetID)
 			}
-			if err := syscall.Kill(targetID, syscall.SIGKILL); err != nil {
+			if err := kill(targetID, syscall.SIGKILL); err != nil {
 				return &KillError{
 					err: err,
 					id:  targetID,
@@ -69,7 +63,7 @@ func (runner *Runner) Run(ctx context.Context, cmd *exec.Cmd) error {
 				}
 			}
 		case sig := <-runner.sig:
-			if err := syscall.Kill(targetID, sig); err != nil {
+			if err := kill(targetID, sig); err != nil {
 				return &KillError{
 					err: err,
 					id:  targetID,
@@ -82,7 +76,7 @@ func (runner *Runner) Run(ctx context.Context, cmd *exec.Cmd) error {
 				})
 			}
 		case <-ctx.Done():
-			if err := syscall.Kill(targetID, runner.firstSignal); err != nil {
+			if err := kill(targetID, runner.firstSignal); err != nil {
 				return &KillError{
 					err: err,
 					id:  targetID,

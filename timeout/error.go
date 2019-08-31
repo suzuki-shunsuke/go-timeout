@@ -1,5 +1,9 @@
 package timeout
 
+import (
+	"syscall"
+)
+
 type (
 	StartError struct {
 		err error
@@ -12,6 +16,7 @@ type (
 	KillError struct {
 		err error
 		id  int
+		sig syscall.Signal
 	}
 )
 
@@ -37,6 +42,10 @@ func (ke *KillError) Error() string {
 
 func (ke *KillError) Cause() error {
 	return ke.err
+}
+
+func (ke *KillError) Signal() syscall.Signal {
+	return ke.sig
 }
 
 func (ke *KillError) PID() int {

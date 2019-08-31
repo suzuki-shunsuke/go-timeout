@@ -54,11 +54,19 @@ func (runner *Runner) Run(ctx context.Context, cmd *exec.Cmd) error {
 		select {
 		case <-killAfterChan:
 			if err := syscall.Kill(targetID, syscall.SIGKILL); err != nil {
-				return &KillError{err: err, id: targetID}
+				return &KillError{
+					err: err,
+					id:  targetID,
+					sig: syscall.SIGKILL,
+				}
 			}
 		case sig := <-runner.sig:
 			if err := syscall.Kill(targetID, sig); err != nil {
-				return &KillError{err: err, id: targetID}
+				return &KillError{
+					err: err,
+					id:  targetID,
+					sig: sig,
+				}
 			}
 			if runner.killAfter > 0 {
 				time.AfterFunc(runner.killAfter, func() {
@@ -67,7 +75,11 @@ func (runner *Runner) Run(ctx context.Context, cmd *exec.Cmd) error {
 			}
 		case <-ctx.Done():
 			if err := syscall.Kill(targetID, runner.firstSignal); err != nil {
-				return &KillError{err: err, id: targetID}
+				return &KillError{
+					err: err,
+					id:  targetID,
+					sig: runner.firstSignal,
+				}
 			}
 			if runner.killAfter > 0 {
 				time.AfterFunc(runner.killAfter, func() {

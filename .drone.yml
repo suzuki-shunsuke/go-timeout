@@ -12,7 +12,7 @@ steps:
   commands:
     - sh scripts/durl.sh
 - name: golangci-lint
-  image: golangci/golangci-lint:v1.17.1
+  image: golangci/golangci-lint:v1.22.2-alpine
   commands:
   - golangci-lint run
   environment:
@@ -21,7 +21,7 @@ steps:
   - name: gopath
     path: /go
 - name: codecov
-  image: golang:1.12.9
+  image: golang:1.13.5
   commands:
   # bash and cgo seem to be required
   - go test -race -coverprofile=coverage.out -covermode=atomic ./timeout

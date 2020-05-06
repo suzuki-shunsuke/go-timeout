@@ -9,7 +9,7 @@ steps:
   commands:
   - shellcheck scripts/* githooks/*
 - name: shfmt
-  image: mvdan/shfmt:v3.0.0
+  image: mvdan/shfmt:v3.1.1-alpine
   commands:
   - shfmt -d .
 ---
@@ -29,8 +29,6 @@ steps:
   image: golangci/golangci-lint:v1.26.0-alpine
   commands:
   - golangci-lint run
-  environment:
-    GOPATH: /go
   volumes: &volumes
   - name: gopath
     path: /go
@@ -42,7 +40,6 @@ steps:
   - curl -s https://codecov.io/bash > /tmp/codecov.sh
   - test "$LOCAL" = "true" -o "$DRONE_BUILD_EVENT" = "pull_request" || bash /tmp/codecov.sh
   environment:
-    GOPATH: /go
     CODECOV_TOKEN:
       from_secret: codecov_token
   volumes: *volumes

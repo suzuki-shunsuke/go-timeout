@@ -33,7 +33,7 @@ steps:
   - name: gopath
     path: /go
 - name: codecov
-  image: golang:1.14.3
+  image: golang:1.14.4
   commands:
   # bash and cgo seem to be required
   - go test -race -coverprofile=coverage.out -covermode=atomic ./timeout

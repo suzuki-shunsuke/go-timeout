@@ -56,7 +56,7 @@ func (runner *Runner) Run(ctx context.Context, cmd *exec.Cmd) error {
 				runner.sigKillCallback(targetID)
 			}
 			if err := kill(targetID, syscall.SIGKILL); err != nil {
-				return &KillError{
+				return KillError{
 					err: err,
 					id:  targetID,
 					sig: syscall.SIGKILL,
@@ -64,7 +64,7 @@ func (runner *Runner) Run(ctx context.Context, cmd *exec.Cmd) error {
 			}
 		case sig := <-runner.sig:
 			if err := kill(targetID, sig); err != nil {
-				return &KillError{
+				return KillError{
 					err: err,
 					id:  targetID,
 					sig: sig,
@@ -77,7 +77,7 @@ func (runner *Runner) Run(ctx context.Context, cmd *exec.Cmd) error {
 			}
 		case <-ctx.Done():
 			if err := kill(targetID, runner.firstSignal); err != nil {
-				return &KillError{
+				return KillError{
 					err: err,
 					id:  targetID,
 					sig: runner.firstSignal,
@@ -92,7 +92,7 @@ func (runner *Runner) Run(ctx context.Context, cmd *exec.Cmd) error {
 			if err == nil {
 				return nil
 			}
-			return &WaitError{err: err}
+			return WaitError{err: err}
 		}
 	}
 }

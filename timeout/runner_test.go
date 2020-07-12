@@ -1,33 +1,20 @@
-package timeout
+package timeout_test
 
 import (
 	"context"
 	"os/exec"
-	"syscall"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/suzuki-shunsuke/go-timeout/timeout"
 )
 
 func TestNewRunner(t *testing.T) {
-	assert.NotNil(t, NewRunner(0))
-}
-
-func TestRunner_SendSignal(t *testing.T) {
-	runner := NewRunner(0)
-	runner.SendSignal(syscall.SIGINT)
-	a := <-runner.sig
-	assert.Equal(t, syscall.SIGINT, a)
-}
-
-func TestRunner_SetSignal(t *testing.T) {
-	runner := NewRunner(0)
-	runner.SetSignal(syscall.SIGINT)
-	assert.Equal(t, syscall.SIGINT, runner.firstSignal)
+	assert.NotNil(t, timeout.NewRunner(0))
 }
 
 func TestRunner_Run(t *testing.T) {
-	runner := NewRunner(0)
+	runner := timeout.NewRunner(0)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	assert.Nil(t, runner.Run(ctx, exec.Command("true")))

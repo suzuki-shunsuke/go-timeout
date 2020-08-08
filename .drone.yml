@@ -32,14 +32,12 @@ steps:
   volumes: &volumes
   - name: gopath
     path: /go
-- name: codecov
+- name: test
   image: golang:1.14.6
   commands:
   # bash and cgo seem to be required
-  - go test -race -coverprofile=coverage.out -covermode=atomic ./timeout
-  - curl -s https://codecov.io/bash > /tmp/codecov.sh
-  - test "$LOCAL" = "true" -o "$DRONE_BUILD_EVENT" = "pull_request" || bash /tmp/codecov.sh
+  - bash ci/test.sh
   environment:
-    CODECOV_TOKEN:
-      from_secret: codecov_token
+    CC_TEST_REPORTER_ID:
+      from_secret: cc_test_reporter_id
   volumes: *volumes

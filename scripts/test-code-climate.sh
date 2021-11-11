@@ -10,7 +10,7 @@ ee() {
 
 cd "$(dirname "$0")/.."
 
-ee cc-test-reporter before-build
+ee test-reporter before-build
 
 mkdir -p .code-climate
 
@@ -23,10 +23,10 @@ for d in $(go list ./...); do
   if [ "$(wc -l < "$profile")" -eq 1 ]; then
     continue
   fi
-  ee cc-test-reporter format-coverage -t gocov -p "github.com/suzuki-shunsuke/go-timeout" -o "$coverage" "$profile"
+  ee test-reporter format-coverage -t gocov -p "github.com/suzuki-shunsuke/go-timeout" -o "$coverage" "$profile"
 done
 
 result=.code-climate/codeclimate.total.json
 # shellcheck disable=SC2046
-ee cc-test-reporter sum-coverage $(find .code-climate -name coverage.json) -o "$result"
-ee cc-test-reporter upload-coverage -i "$result"
+ee test-reporter sum-coverage $(find .code-climate -name coverage.json) -o "$result"
+ee test-reporter upload-coverage -i "$result"

@@ -1,5 +1,17 @@
 {
+  "automerge": true,
   "extends": [
-    "github>suzuki-shunsuke/renovate-config:golang"
+    "config:base",
+    "github>suzuki-shunsuke/aqua-renovate-config"
+  ],
+  "packageRules": [
+    {
+      "automerge": false,
+      "matchUpdateTypes": ["major"]
+    },
+    {
+      "postUpdateOptions": ["gomodTidy"],
+      "matchManagers": ["gomod"]
+    }
   ]
 }

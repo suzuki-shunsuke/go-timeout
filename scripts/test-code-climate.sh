@@ -5,7 +5,7 @@ set -o pipefail
 
 ee() {
   echo "+ $*"
-  eval "$@"
+  "$@"
 }
 
 cd "$(dirname "$0")/.."

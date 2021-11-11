@@ -5,7 +5,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/3d3b9a00cbd9a9188962/test_coverage)](https://codeclimate.com/github/suzuki-shunsuke/go-timeout/test_coverage)
 [![Go Report Card](https://goreportcard.com/badge/github.com/suzuki-shunsuke/go-timeout)](https://goreportcard.com/report/github.com/suzuki-shunsuke/go-timeout)
 [![GitHub last commit](https://img.shields.io/github/last-commit/suzuki-shunsuke/go-timeout.svg)](https://github.com/suzuki-shunsuke/go-timeout)
-[![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/suzuki-shunsuke/go-timeout/master/LICENSE)
+[![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/suzuki-shunsuke/go-timeout/main/LICENSE)
 
 Golang library to treat the timeout of the external command.
 

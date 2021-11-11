@@ -2,7 +2,7 @@
 
 ee() {
   echo "+ $*"
-  eval "$@"
+  "$@"
 }
 
 cd "$(dirname "$0")"/.. || exit 1

@@ -4,8 +4,7 @@ set -eu
 
 cd "$(dirname "$0")/.."
 
-mkdir -p bin
-curl -L -o bin/cc-test-reporter https://codeclimate.com/downloads/test-reporter/test-reporter-0.10.1-linux-amd64
-chmod a+x bin/cc-test-reporter
-export PATH="$PWD/bin:$PATH"
+export PATH=$HOME/.aqua/bin:$PATH
+curl -sSfL https://raw.githubusercontent.com/suzuki-shunsuke/aqua-installer/v0.2.0/aqua-installer | bash
+aqua i -l
 bash scripts/test-code-climate.sh

@@ -3,7 +3,7 @@ registries:
   ref: v0.10.6 # renovate: depName=suzuki-shunsuke/aqua-registry
 
 packages:
-- name: codeclimate/test-reporter@0.6.3
+- name: codeclimate/test-reporter@0.10.1
 - name: golangci/golangci-lint@v1.43.0
 - name: koalaman/shellcheck@v0.8.0
 - name: mvdan/sh@v3.4.0

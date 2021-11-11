@@ -36,7 +36,7 @@ func (runner *Runner) SetSigKillCaballback(cb func(int)) {
 	runner.sigKillCallback = cb
 }
 
-func (runner *Runner) Run(ctx context.Context, cmd *exec.Cmd) error {
+func (runner *Runner) Run(ctx context.Context, cmd *exec.Cmd) error { //nolint:cyclop
 	if err := cmd.Start(); err != nil {
 		return &StartError{err: err}
 	}

@@ -10,10 +10,11 @@ import (
 )
 
 func TestNewRunner(t *testing.T) {
+	t.Parallel()
 	assert.NotNil(t, timeout.NewRunner(0))
 }
 
-func TestRunner_Run(t *testing.T) {
+func TestRunner_Run(t *testing.T) { //nolint:paralleltest
 	runner := timeout.NewRunner(0)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()

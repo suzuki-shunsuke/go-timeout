@@ -43,7 +43,7 @@ sleep 3600
 	for {
 		select {
 		case err := <-exitChan:
-			fmt.Println("command exit", err)
+			fmt.Println("command exit", err) //nolint:forbidigo
 			return
 		case sig := <-signalChan:
 			if _, ok := sentSignals[sig]; ok {

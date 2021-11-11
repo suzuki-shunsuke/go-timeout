@@ -1,3 +1,4 @@
+//go:build !windows
 // +build !windows
 
 package timeout
@@ -7,7 +8,7 @@ import (
 )
 
 func kill(pid int, sig syscall.Signal) error {
-	return syscall.Kill(pid, sig)
+	return syscall.Kill(pid, sig) //nolint:wrapcheck
 }
 
 func getTargetID(pid int) int {

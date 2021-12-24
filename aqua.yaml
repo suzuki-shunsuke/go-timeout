@@ -8,6 +8,6 @@ packages:
 - name: codeclimate/test-reporter@0.10.2
 - name: golangci/golangci-lint@v1.43.0
 - name: koalaman/shellcheck@v0.8.0
-- name: mvdan/sh@v3.4.1
+- name: mvdan/sh@v3.4.2
 - name: suzuki-shunsuke/cmdx@v1.6.1
 - name: suzuki-shunsuke/durl@v1.0.0

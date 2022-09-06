@@ -33,7 +33,7 @@ steps:
   - name: gopath
     path: /go
 - name: test
-  image: golang:1.19.0
+  image: golang:1.19.1
   commands:
   # bash and cgo seem to be required
   - bash ci/test.sh

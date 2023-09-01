@@ -6,7 +6,7 @@ registries:
 
 packages:
 - name: codeclimate/test-reporter@0.10.3
-- name: golangci/golangci-lint@v1.43.0
+- name: golangci/golangci-lint@v1.54.2
 - name: koalaman/shellcheck@v0.8.0
 - name: mvdan/sh@v3.6.0
 - name: suzuki-shunsuke/cmdx@v1.6.1
